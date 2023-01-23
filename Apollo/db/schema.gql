@@ -1,0 +1,193 @@
+const {  gql } = require("apollo-server");
+
+const typeDefs = gql`
+# Users
+  type User {
+    id: ID
+    name: String
+    nachname: String
+    email: String
+    CreatedAt: String
+   }
+   # token for auth
+   type Token {
+    token: String
+   }
+    
+   # Orders
+    type Order {
+      id: ID
+      order: [OrderGroup]
+      total: Float
+      client: ID
+      seller: ID
+      status: OrderStatus
+      CreatedAt: String
+
+    }
+    type OrderGroup {
+      id: ID
+      quantity: Int
+      name: String
+      price: Float
+    }
+   
+   # Products
+   type Product {
+    id: ID
+    name: String
+    existence: Int
+    price: Float
+    category: String
+    description: String
+    CreatedAt: String
+   }
+   #categories
+   type Category {
+    id: ID
+    name: String
+    description: String
+    CreatedAt: String
+   }   
+  # Clients
+  type Client {
+    id: ID
+    name: String
+    nachname: String
+    company: String
+    email: String
+    phone: String
+    address: String
+    seller: ID
+    CreatedAt: String
+   }
+    # Top Clients
+    type TopClient {
+      total: Float
+      client: [Client]
+    }
+    # Top Sellers
+    type TopSeller {
+      total: Float
+      seller: [User]
+    }
+   #Users
+   input UserInput {
+    name: String!
+    nachname: String!
+    email: String!
+    password: String!
+   }
+   input AuthInput {
+    email: String!
+    password: String!
+   }
+   # PRODUCTS
+   input ProductInput {
+    name: String!
+    existence: Int!
+    price: Float!
+    category: String!
+    description: String!
+   }
+   # Clients
+   input ClientInput {
+    name: String!
+    nachname: String!
+    company: String!
+    email: String!
+    phone: String
+    address: String!
+   }
+  # Orders
+   input OrderGroupInput {
+    id: ID
+    quantity: Int
+    name: String
+    price: Float
+   }
+
+   input OrderInput {
+    order: [OrderGroupInput]
+    total: Float
+    client: ID
+    status: OrderStatus
+   }
+    enum OrderStatus {
+    PENDING
+    COMPLETED
+    CANCELED
+   }
+    input UpdateClientInput {
+     name: String
+     nachname: String
+     company: String
+     email: String
+     phone: String
+     address: String
+    }
+    # Categories
+    input CreateCategoryInput {
+      name: String!
+      description: String!
+    }
+    input CreateProductInput {
+      name: String!
+      description: String!
+    }
+    type Query {
+     # Users
+    getUser : User
+    getProductById(id: ID!) : Product
+
+      # Products
+     getProducts : [Product]
+     #ADVANCED SEARCHES
+     getTopClients : [TopClient]
+     getTopSellers : [TopSeller]
+     
+      # Clients
+     getClients : [Client]
+     getClientBySeller : [Client]
+     getClient(id: ID!) : Client
+     getProductByContext(text:String!):[Product] 
+      # Orders
+     getOrders : [Order]
+     getOrdersBySeller : [Order]
+     getOrder(id: ID!) : Order
+     getOrderByStatus(status: String!) : [Order]
+     # Categories
+     getCategories : [Category]
+     getCategoryByContext(text:String!):[Category]
+     getCategoryByName(name:String!):[Category]
+     getCategory(id: ID!) : Category
+    }
+ 
+    type Mutation {
+    # Users
+      createNewUser(input: UserInput) : User
+      authUser(input: AuthInput) : Token
+
+     # Products
+      createNewProduct(input: ProductInput) : Product
+      updateProduct(id: ID!, input: ProductInput) : Product
+      deleteProduct(id: ID!) : String
+
+     # Clients
+      createNewClient(input: ClientInput) : Client
+      updateClient(id: ID!, input: UpdateClientInput) : Client
+      deleteClient(id: ID!) : String
+
+     # Orders
+      createNewOrder(input: OrderInput) : Order
+      updateOrder(id: ID!  input: OrderInput) : Order
+      deleteOrder(id: ID!) : String
+     # Categories
+      createNewCategory(input: CreateCategoryInput) : Category
+      updateCategory(id: ID! input: CreateCategoryInput) : Category
+      deleteCategory(id: ID!) : String
+  }
+ 
+`;
+
+module.exports = typeDefs;
