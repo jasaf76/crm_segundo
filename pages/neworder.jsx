@@ -40,6 +40,7 @@ const GET_ORDERS = gql`
       }
       seller
       status
+      total
     }
   }
 `;
@@ -57,6 +58,8 @@ const NewOrder = () => {
   const [createNewOrder] = useMutation(NEW_ORDER, {
     update(cache, { data: { createNewOrder } }) {
       const { getOrdersBySeller } = cache.readQuery({ query: GET_ORDERS });
+      // const { currentUser } =
+      //   client && client.readQuery({ query: CURRENT_USER_QUERY });
       cache.writeQuery({
         query: GET_ORDERS,
         data: { getOrdersBySeller: [...getOrdersBySeller, createNewOrder] },

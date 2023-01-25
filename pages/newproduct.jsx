@@ -12,7 +12,7 @@ const NEW_PRODUCT = gql`
       name
       existence
       price
-    
+      category
       description
       CreatedAt
     }
@@ -25,7 +25,7 @@ const GET_PRODUCTS = gql`
       name
       existence
       price
-    
+      category
       description
       CreatedAt
     }
@@ -52,7 +52,7 @@ const NewProduct = () => {
       name: "",
       existence: "",
       price: "",
-     
+      category: "",
       description: "",
     },
     validationSchema: Yup.object({
