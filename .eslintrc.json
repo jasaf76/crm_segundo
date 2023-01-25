@@ -1,3 +1,6 @@
-{
-  "extends": "next/core-web-vitals"
-}
+// In your project root, create a file named .eslintrc.js
+
+module.exports = {
+  extends: ["next/babel", "next/core-web-vitals"],
+ 
+};

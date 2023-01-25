@@ -16,8 +16,8 @@ const createToken = (user, secret, expiresIn) => {
 
 const resolvers = {
   Query: {
-    getUser: async (_, { },ctx) => {
-     // const userId = await jwt.verify(token, process.env.SECRET);
+    getUser: async (_, {}, ctx) => {
+      // const userId = await jwt.verify(token, process.env.SECRET);
       return ctx.user;
     },
     getProducts: async () => {
@@ -44,7 +44,7 @@ const resolvers = {
         console.log(error);
       }
     },
-    getCategoryByContext: async (_, { }, ctx) => {
+    getCategoryByContext: async (_, {}, ctx) => {
       try {
         const category = await Category.findById(ctx.user.category);
         return category;
@@ -84,8 +84,8 @@ const resolvers = {
     },
     getClientBySeller: async (_, {}, ctx) => {
       try {
-        const client = await Client.find({ seller: ctx.user.id.toString() });
-        return client;
+        const clients = await Client.find({ seller: ctx.user.id.toString() });
+        return clients;
       } catch (error) {
         console.log(error);
       }
@@ -112,7 +112,9 @@ const resolvers = {
     },
     getOrdersBySeller: async (_, {}, ctx) => {
       try {
-        const orders = await Order.find({ seller: ctx.user.id });
+        const orders = await Order.find({ seller: ctx.user.id }).populate(
+          "client"
+        );
         return orders;
       } catch (error) {
         console.log(error);
@@ -287,7 +289,7 @@ const resolvers = {
     },
     createNewClient: async (_, { input }, ctx) => {
       const { email } = input;
-      console.log(ctx);
+      // console.log(ctx);
       // check if product exists
       const clientExists = await Client.findOne({ email });
       if (clientExists) {
@@ -297,7 +299,7 @@ const resolvers = {
       //PROduct asign to client
       client.seller = ctx.user.id;
 
-      // create product in db
+      // create client in db
       try {
         const result = await client.save();
         return result;
@@ -308,9 +310,9 @@ const resolvers = {
     },
     updateClient: async (_, { id, input }, ctx) => {
       // check if client exists
-      console.log(id)
+      console.log(id);
       let client = await Client.findById(id);
-      
+
       if (!client) {
         throw new Error("Client does not exists");
       }

@@ -3,7 +3,7 @@ import Layout from "../components/Layout";
 import styles from "../styles/Home.module.css";
 import Product from "../components/product/Product";
 import { gql, useQuery } from "@apollo/client";
-
+import Loading from "../components/loading/Loading";
 const GET_PRODUCTS = gql`
   query getProducts {
     getProducts {
@@ -24,7 +24,7 @@ const Products = () => {
   console.log(data);
   console.log(loading);
   console.log(error);
-  if (loading) return "Loading...";
+  if (loading) return  <Loading />;
   if (error) return `Error! ${error.message}`;
 
   return (

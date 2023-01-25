@@ -85,7 +85,7 @@ const Registrieren = () => {
 
         setTimeout(() => {
           saveMessage(null);
-        }, 30000);
+        }, 3000);
       }
     },
   });

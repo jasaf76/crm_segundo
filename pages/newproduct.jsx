@@ -12,8 +12,9 @@ const NEW_PRODUCT = gql`
       name
       existence
       price
-      category
+    
       description
+      CreatedAt
     }
   }
 `;
@@ -24,7 +25,7 @@ const GET_PRODUCTS = gql`
       name
       existence
       price
-      category
+    
       description
       CreatedAt
     }
@@ -51,7 +52,7 @@ const NewProduct = () => {
       name: "",
       existence: "",
       price: "",
-      category: "",
+     
       description: "",
     },
     validationSchema: Yup.object({
@@ -105,6 +106,16 @@ const NewProduct = () => {
       }
     },
   });
+  const categories = [
+    { id: 1, name: "Electronics" },
+    { id: 2, name: "Fashion" },
+    { id: 3, name: "Home & Garden" },
+    { id: 4, name: "Sports & Outdoors" },
+    { id: 5, name: "Books" },
+    { id: 6, name: "Toys & Games" },
+    { id: 7, name: "Automotive" },
+  ];
+  const defaultOption ="Kategorie auswählen"
   return (
     <Layout>
       <h1 className="text-2xl text-gray-800 font-light">Neues Produkt</h1>
@@ -170,19 +181,18 @@ const NewProduct = () => {
                 <label
                   className="block text-gray-700 text-sm font-bold mb-2"
                   htmlFor="price">
-                  {" "}
                   Preis
                 </label>
                 <input
                   type="number"
                   id="price"
                   placeholder="Preis des Produkts"
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-
-                
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700
               leading-tight focus:outline-none focus:shadow-outline"
                   value={formik.values.price}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
+                  suffix="€"
                 />
               </div>
               {formik.touched.price && formik.errors.price ? (
@@ -199,28 +209,32 @@ const NewProduct = () => {
                 <label
                   className="block text-gray-700 text-sm font-bold mb-2"
                   htmlFor="category">
-                  {" "}
                   Kategorie
                 </label>
-                <input
-                  type="text"
+                <select
+                  className="border-0 px-3 py-3 placeholder-gray-400 text-gray-700 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                   id="category"
-                  placeholder="Kategorie des Produkts"
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-
-                
-              leading-tight focus:outline-none focus:shadow-outline"
                   value={formik.values.category}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                />
+                  name="category">
+                  <option value="" disabled>
+                    Kategorie auswählen
+                  </option>
+                  {categories.map((category) => (
+                    <option
+                      key={category.id}
+                      value={category.name}
+                      disabled={category.name === defaultOption}>
+                      {category.name}
+                    </option>
+                  ))}
+                </select>
               </div>
               {formik.touched.category && formik.errors.category ? (
                 <div className="text-red-500 text-xs italic">
                   {formik.errors.category}
-                  <p className="text-xs italic">
-                    {" "}
-                    Es muss eine ganze Zahl sein
-                  </p>
+                  <p className="text-xs italic">Es muss eine ganze Zahl sein</p>
                   <p>{formik.errors.category}</p>
                 </div>
               ) : null}
@@ -228,15 +242,20 @@ const NewProduct = () => {
             <div className="flex flex-wrap -mx-3 mb-6">
               <div className="w-full lg:w-12/12 px-3">
                 <div className="relative w-full mb-3">
-                  <label className="block uppercase text-gray-700 text-xs font-bold mb-2">
+                  <label
+                    className="block uppercase text-gray-700 text-xs font-bold mb-2"
+                    htmlFor="description">
                     Beschreibung
                   </label>
                   <textarea
                     className="shadow appearance-none border rounded w-full py-2 px-3 text-
-                  leading-tight focus:outline-none focus:shadow-outline"
+                  leading-tight focus:outline-none focus:shadow-outline h-48 resize-none block"
                     value={formik.values.description}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
+                    placeholder="Beschreibung des Produkts"
+                    rows="4"
+                    name="description"
                   />
                 </div>
                 {formik.touched.description && formik.errors.description ? (
@@ -251,7 +270,7 @@ const NewProduct = () => {
                 ) : null}
                 <input
                   type="submit"
-                  className="bg-zinc-800 w-full mt-5 p-2 text-white uppercase hover:bg-gray-900"
+                  className="bg-sky-800 w-full mt-5 p-2 text-white uppercase hover:bg-lime-600 cursor-pointer font-semibold text-amber-500 rounded hover:text-blue-900"
                   value="Erstellen Sie ein neues Produkt"
                 />
               </div>

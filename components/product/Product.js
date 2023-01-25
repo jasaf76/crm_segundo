@@ -22,7 +22,8 @@ const GET_PRODUCTS = gql`
   }
 `;
 const Product = ({ product }) => {
-  const { id, name, existence, price, category, description,CreatedAt } = product;
+  const { id, name, existence, price, category, description, CreatedAt } = product;
+  
   const [deleteProduct] = useMutation(DELETE_PRODUCT, {
     update(cache) {
       const { getProducts } = cache.readQuery({

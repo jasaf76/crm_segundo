@@ -122,15 +122,17 @@ const EditProduct = () => {
   };
   const { getProductById } = data;
   const categories = [
-    { id: 1, name: "Electronics" },
+    { id: 1, name: "Kategorie auswählen" },
     { id: 2, name: "Fashion" },
     { id: 3, name: "Home & Garden" },
     { id: 4, name: "Sports & Outdoors" },
     { id: 5, name: "Books" },
     { id: 6, name: "Toys & Games" },
     { id: 7, name: "Automotive" },
+    { id: 8, name: "Electronics" },
   ];
-  console.log(categories);
+  
+  const defaultOption = "Kategorie auswählen";
   return (
     <Layout>
       <h1 className="text-2xl text-gray-800 font-light">Edit Product</h1>
@@ -224,9 +226,8 @@ const EditProduct = () => {
                       Beschreibung
                     </label>
                     <textarea
-                     
                       rows="5"
-                      className="border-0 px-3 py-3 placeholder-gray-400 text-gray-700 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150   text-blue-900 " 
+                      className="border-0 px-3 py-3 placeholder-gray-400 text-gray-700 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150   text-blue-900 "
                       placeholder="Beschreibung des Produktes rows-5 "
                       id="description"
                       value={props.values.description}
@@ -251,14 +252,20 @@ const EditProduct = () => {
                       id="category"
                       value={props.values.category}
                       onChange={props.handleChange}
-                      onBlur={props.handleBlur}>
-                      <option value="">Kategorie auswählen</option>
+                      onBlur={props.handleBlur}
+                      name="category">
+                      <option value="" disabled>
+                        Kategorie auswählen
+                      </option>
                       {categories.map((category) => (
-                        <option key={category.id} value={category.name}>
+                        <option
+                          key={category.id}
+                          value={category.name}
+                          disabled={category.name === defaultOption}>
                           {category.name}
                         </option>
                       ))}
-                      </select>
+                    </select>
                     {props.touched.category && props.errors.category ? (
                       <div className="my-2 bg-red-100 border-l-4 border-red-500 text-red-700 p-4">
                         <p className="font-bold">Error</p>

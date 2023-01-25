@@ -1,7 +1,7 @@
 import React from "react";
 import { gql, useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
-
+import Loading from "../loading/Loading";
 const GET_USER = gql`
   query getUser {
     getUser {
@@ -21,7 +21,7 @@ const Header = () => {
   console.log(error)
 
   //protect data loading for not show error
-   if (loading) return null;
+   if (loading) return <Loading />;
 
   //Si no hay informacion
   if (!data) {
